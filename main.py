@@ -291,10 +291,14 @@ try:
             x0, y0, x1, y1 = symbol_box
             if det_name is not None:
                
+
                 # Format name nicely: "UP_1.png" -> "UP"
                 display_name = det_name.split('.')[0]
-                if '' in display_name and display_name.rsplit('', 1)[1].isdigit():
-                    display_name = display_name.rsplit('_', 1)[0]
+                if '_' in display_name:
+                    parts = display_name.rsplit('_', 1)
+                    # Only strip the suffix if the part after '_' is a number (like _1, _2)
+                    if parts[1].isdigit():
+                        display_name = parts[0]
 
                 cv2.rectangle(disp, (x0, y0), (x1, y1), (0, 255, 0), 3)
                 cv2.putText(disp, f"{display_name} ({det_score:.2f})", (x0, max(20, y0 - 10)),
